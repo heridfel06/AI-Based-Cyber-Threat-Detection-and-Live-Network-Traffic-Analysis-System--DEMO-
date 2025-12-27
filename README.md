@@ -76,32 +76,6 @@ Platform
 
 Windows OS
 
-Npcap (WinPcap compatible mode)
-
-5. Folder Structure
-project/
-├── data/
-│   ├── live_packets.csv
-│   ├── live_features.csv
-│   ├── training_dataset.csv
-│   ├── KDDTrain+.txt
-│   └── KDDTest+.txt
-├── models/
-│   └── attack_model.pkl
-├── scripts/
-│   ├── live_capture.py
-│   ├── feature_extraction.py
-│   ├── dataset_pre.py
-│   ├── train_model.py
-│   ├── live_detection.py
-│   ├── traffic_analysis.py
-│   ├── alert_engine.py
-│   └── run_demo.py
-├── analysis/
-│   └── traffic plots (*.png)
-├── alerts/
-│   └── alerts.log
-└── README.md
 
 6. Feature Description
 Live Traffic Features
@@ -249,3 +223,4 @@ This project demonstrates a complete AI-based IDS pipeline, integrating live net
 
 
 It successfully proves the feasibility of applying ML techniques to real-time cybersecurity monitoring in an academic environment.
+
