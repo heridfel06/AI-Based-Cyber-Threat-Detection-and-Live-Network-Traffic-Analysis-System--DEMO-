@@ -3,51 +3,60 @@ import sys
 import os
 import time
 
-# -----------------------------
-# Path configuration
-# -----------------------------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
 
-def run_script(script_name):
-    script_path = os.path.join(SCRIPTS_DIR, script_name)
+RUNTIME_SCRIPTS = [
+    "live_capture.py",
+    "feature_extraction.py",
+    "live_detection.py",
+    "live_anomaly_detection.py",
+    "alert_engine.py",
+    "auto_response.py"
+]
+
+def run_script(script):
+    path = os.path.join(SCRIPTS_DIR, script)
+    print(f"▶ Starting {script}")
     return subprocess.Popen(
-        [sys.executable, script_path],
+        [sys.executable, path],
         creationflags=subprocess.CREATE_NEW_CONSOLE
     )
 
-print("====================================")
-print(" AI-Based Cyber Threat Detection Demo ")
-print("====================================\n")
+print("=" * 60)
+print(" AI-BASED IDS – FULL RUNTIME DEMO ")
+print("=" * 60)
 
-# 1. Live Packet Capture
-print("[1/5] Starting live packet capture...")
-run_script("live_capture.py")
-time.sleep(5)
+print("\nRuntime services to be launched:")
+for s in RUNTIME_SCRIPTS:
+    print(f"  • {s}")
 
-# 2. Feature Extraction
-print("[2/5] Starting feature extraction...")
-run_script("feature_extraction.py")
-time.sleep(5)
+print("\nNOTE:")
+print("• Training scripts are NOT launched (already completed)")
+print("• Dashboard is started manually")
+print("• Some services remain silent until events occur\n")
 
-# 3. ML-Based Detection
-print("[3/5] Starting ML-based attack detection...")
-run_script("live_detection.py")
-time.sleep(5)
+processes = []
 
-# 4. Alert Engine
-print("[4/5] Starting alert engine...")
-run_script("alert_engine.py")
-time.sleep(5)
+for script in RUNTIME_SCRIPTS:
+    processes.append(run_script(script))
+    time.sleep(4)
 
-# 5. Traffic Analysis (can be rerun anytime)
-print("[5/5] Running traffic analysis...")
-run_script("traffic_analysis.py")
+print("\n================================================")
+print(" ALL RUNTIME IDS SERVICES ARE NOW RUNNING ")
+print("================================================")
 
-print("\n------------------------------------")
-print("All IDS components started successfully.")
-print("Generate traffic or run nmap to observe:")
-print("- ML predictions")
-print("- Alerts")
-print("- Traffic analysis plots")
-print("------------------------------------")
+print("\nWHAT TO EXPECT:")
+print("• live_capture.py → packet logs")
+print("• feature_extraction.py → CSV updates")
+print("• live_detection.py → ML output")
+print("• live_anomaly_detection.py → anomaly scores")
+print("• alert_engine.py → alerts.log")
+print("• auto_response.py → response.log")
+
+print("\nOPTIONAL:")
+print("Start dashboard manually:")
+print("python -m streamlit run dashboard.py")
+
+print("\nSTOP:")
+print("Close individual windows or press CTRL+C inside them.")

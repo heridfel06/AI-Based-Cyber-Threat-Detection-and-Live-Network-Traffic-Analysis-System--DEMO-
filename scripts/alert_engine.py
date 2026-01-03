@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # =============================
-# PATH CONFIGURATION
+# PATHS
 # =============================
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -22,13 +22,28 @@ ALERT_FILE = os.path.join(ALERT_DIR, "alerts.log")
 os.makedirs(ALERT_DIR, exist_ok=True)
 
 # =============================
+# CONFIG
+# =============================
+PORT_SCAN_THRESHOLD = 20
+TIME_WINDOW_SECONDS = 5
+
+FEATURE_COLUMNS = [
+    "packet_count",
+    "unique_dst_ports",
+    "avg_packet_size",
+    "tcp_flag",
+    "udp_flag",
+    "flow_duration"
+]
+
+# =============================
 # STARTUP INFO
 # =============================
-print("\n=========== ALERT ENGINE STARTED ===========")
-print("FEATURE FILE:", FEATURE_FILE)
-print("MODEL FILE  :", MODEL_FILE)
-print("ALERT FILE  :", ALERT_FILE)
-print("===========================================\n")
+print("\n=========== ALERT ENGINE (DECISION MODE) ===========")
+print("Feature file :", FEATURE_FILE)
+print("Model file   :", MODEL_FILE)
+print("Alert file   :", ALERT_FILE)
+print("===================================================\n")
 
 # =============================
 # LOAD MODEL
@@ -38,14 +53,11 @@ model = joblib.load(MODEL_FILE)
 last_index = -1
 
 # =============================
-# SAFE LOG FUNCTION
+# LOGGING
 # =============================
-def log_alert(msg):
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{ts}] {msg}"
-    print(line)
+def log_alert(text):
     with open(ALERT_FILE, "a") as f:
-        f.write(line + "\n")
+        f.write(text + "\n")
         f.flush()
         os.fsync(f.fileno())
 
@@ -62,7 +74,7 @@ while True:
 
     for idx, row in new_rows.iterrows():
 
-        # ---- FIX: derive flags from counts ----
+        # Derive protocol flags safely
         tcp_flag = 1 if row["tcp_count"] > 0 else 0
         udp_flag = 1 if row["udp_count"] > 0 else 0
 
@@ -75,20 +87,44 @@ while True:
             "flow_duration": row["flow_duration"]
         }])
 
-        prediction = model.predict(X)[0]
+        # ML prediction + confidence
+        ml_prediction = model.predict(X)[0]
+        ml_confidence = max(model.predict_proba(X)[0])
 
-        reasons = []
+        # Rule-based suspicion
+        rule_suspicious = row["unique_dst_ports"] > PORT_SCAN_THRESHOLD
 
-        if prediction == 1:
-            reasons.append("ML_ATTACK")
+        # -----------------------------
+        # SECURITY DECISION
+        # -----------------------------
+        if rule_suspicious and ml_prediction == 1:
+            severity = "HIGH"
+            alert_type = "Possible Port Scan"
+        elif ml_prediction == 1:
+            severity = "MEDIUM"
+            alert_type = "Suspicious Traffic"
+        else:
+            severity = "LOW"
+            alert_type = "Normal Activity"
 
-        if row["unique_dst_ports"] > 20:
-            reasons.append("PORT_SCAN")
+        # Only log meaningful security decisions
+        if severity != "LOW":
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        if reasons:
-            log_alert(
-                f"ALERT | SRC={row['src_ip']} | REASON={' + '.join(reasons)}"
+            alert_text = (
+                f"[{timestamp}] ALERT: {alert_type}\n"
+                f"Source IP: {row['src_ip']}\n"
+                f"Decision Basis:\n"
+                f"- Unique destination ports: {row['unique_dst_ports']} "
+                f"(threshold = {PORT_SCAN_THRESHOLD})\n"
+                f"- Time window: {TIME_WINDOW_SECONDS} seconds\n"
+                f"- ML confidence score: {ml_confidence:.2f}\n"
+                f"Final decision: {severity} severity\n"
+                f"{'-'*50}"
             )
+
+            print(alert_text)
+            log_alert(alert_text)
 
         last_index = idx
 
