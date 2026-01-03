@@ -1,3 +1,78 @@
 [2025-12-28 01:16:52] ALERT | SRC=10.205.132.38 | REASON=ML_ATTACK
 [2025-12-28 01:16:52] ALERT | SRC=162.159.135.234 | REASON=ML_ATTACK
 [2025-12-28 01:18:05] ALERT | SRC=13.69.116.105 | REASON=ML_ATTACK
+[2025-12-28 15:31:56] ALERT | SRC=13.69.116.105 | REASON=ML_ATTACK
+[2025-12-28 15:34:39] ALERT | SRC=13.69.116.105 | REASON=ML_ATTACK
+[2025-12-28 15:45:32] ALERT | SRC=13.69.116.108 | REASON=ML_ATTACK
+[2025-12-28 15:45:32] ALERT | SRC=13.69.116.108 | REASON=ML_ATTACK
+[2025-12-28 15:45:33] ALERT | SRC=162.159.130.234 | REASON=ML_ATTACK
+[2025-12-28 15:45:33] ALERT | SRC=162.159.134.234 | REASON=ML_ATTACK
+[2025-12-28 15:45:33] ALERT | SRC=172.188.155.25 | REASON=ML_ATTACK
+[2025-12-28 15:45:33] ALERT | SRC=172.188.155.25 | REASON=ML_ATTACK
+[2025-12-28 15:45:34] ALERT | SRC=192.168.31.1 | REASON=PORT_SCAN
+[2025-12-28 15:45:39] ALERT | SRC=52.168.117.171 | REASON=ML_ATTACK
+[2025-12-28 15:45:39] ALERT | SRC=52.168.117.171 | REASON=ML_ATTACK
+[2025-12-29 15:07:20] ALERT: Suspicious Traffic
+Source IP: 172.188.155.25
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.68
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:20] ALERT: Suspicious Traffic
+Source IP: 192.168.31.1
+Decision Basis:
+- Unique destination ports: 2 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.62
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:23] ALERT: Suspicious Traffic
+Source IP: 34.139.124.58
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.60
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:23] ALERT: Suspicious Traffic
+Source IP: 34.139.124.58
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.78
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:24] ALERT: Suspicious Traffic
+Source IP: 52.168.117.170
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.64
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:24] ALERT: Suspicious Traffic
+Source IP: 52.168.117.170
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.64
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:24] ALERT: Suspicious Traffic
+Source IP: 52.168.117.170
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.53
+Final decision: MEDIUM severity
+--------------------------------------------------
+[2025-12-29 15:07:24] ALERT: Suspicious Traffic
+Source IP: 52.168.117.170
+Decision Basis:
+- Unique destination ports: 1 (threshold = 20)
+- Time window: 5 seconds
+- ML confidence score: 0.63
+Final decision: MEDIUM severity
+--------------------------------------------------
